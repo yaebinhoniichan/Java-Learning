@@ -1,0 +1,40 @@
+import java.util.Scanner;
+
+public class Array {
+	public static void main(String[] args) {
+		String s = "Codelearn";
+		System.out.print(s.charAt(1));
+	}
+}
+
+Đầu vào: Codelearn
+Đầu ra: o
+Giải thích: Nó sẽ lấy ký tự trong chuỗi:
+C = 0
+o = 1
+d = 2
+e = 3
+l = 4
+e = 5
+a = 6
+r = 7
+n = 8
+
+Muốn lấy cái đầu tiên là 0 thì ta áp dụng
+import java.util.Scanner;
+
+public class Array {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.next();
+		int k = sc.nextInt();
+		System.out.print(s.charAt(k - 1));
+	}
+}
+
+Đầu vào:
+Codelearn
+1
+Đầu ra: C
+Giải thích k = 1
+mà 1-1 = 0 suy ra nó là C
