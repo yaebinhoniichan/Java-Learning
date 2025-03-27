@@ -1,0 +1,75 @@
+//File thông tin sinh viên
+package baitap;
+import java.time.LocalDate;
+public class SinhVien {
+	   private String maSinhVien;
+	   private String hoDem;
+	   private String ten;
+	   private boolean gioiTinhNam;
+	   private LocalDate ngaySinh;
+
+public SinhVien(String maSinhVien, String hoDem, String ten, boolean gioiTinhNam, LocalDate ngaySinh) {
+	   this.maSinhVien = maSinhVien;
+	   this.hoDem = hoDem;
+	   this.ten = ten;
+	   this.gioiTinhNam = gioiTinhNam;
+	   this.ngaySinh = ngaySinh;
+    }
+public String getMaSinhVien() {
+    return maSinhVien;
+	}
+
+public String getHoVaTen() {
+    return hoDem + " " + ten;
+	}
+
+public boolean isGioiTinhNam() {
+    return gioiTinhNam;
+	}
+
+public LocalDate getNgaySinh() {
+    return ngaySinh;
+	}
+
+public void setMaSinhVien(String maSinhVien) {
+    this.maSinhVien = maSinhVien;
+	}
+
+public void setHoDem(String hoDem) {
+    this.hoDem = hoDem;
+	}
+
+public void setTen(String ten) {
+    this.ten = ten;
+	}
+
+public void setGioiTinhNam(boolean gioiTinhNam) {
+    this.gioiTinhNam = gioiTinhNam;
+	}
+
+public void setNgaySinh(LocalDate ngaySinh) {
+    this.ngaySinh = ngaySinh;
+	}
+}
+
+//File chạy chương trình
+package baitap;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+public class RunProgram {
+	public static void main(String[] args) {
+		testSinhVien();
+	}
+	private static void testSinhVien() {
+		SinhVien sv;
+		LocalDate ngaySinh = LocalDate.of(1981, 10, 25);
+		sv = new SinhVien("SV1", "Nguyễn Văn", "Trung", true, ngaySinh);
+		System.out.println("Mã sv: " + sv.getMaSinhVien());
+		System.out.println("Họ tên: " + sv.getHoVaTen());
+		System.out.println("Giới tính: " + sv.isGioiTinhNam());
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		System.out.println("Ngày sinh: " + sv.getNgaySinh().format(dtf));
+	}
+}
+
+//LocalDate java 8 trở lên dùng để làm việc với ngày mà không cần xác định múi giờ
