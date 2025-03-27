@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class Array {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int[][] arr = new int[n][m];
+		for(int i = 0; i<n; i++){
+            for(int j = 0; j<m; j++){
+                arr[i][j] = sc.nextInt();
+            }
+        }
+        int sum = 0;
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<m; j++){
+                sum += arr[i][j];
+            }
+        }
+        System.out.print(sum);
+	}
+}
+
+Đầu vào:
+n = 2 m = 3
+5 7 3
+1 2 4
+Đầu ra:
+5+7+3 = 15
+1+2+4 = 7
+Sau đó: 15 + 7 = 22
+Giải thích:
+arr[0][0] = 3
+arr[0][1] = 4
+arr[0][2] = 8
+arr[0][3] = 2
+arr[1][0] = 5
+arr[1][1] = 6
+arr[1][2] = 4
+arr[1][3] = 9
+arr[2][0] = 2
+arr[2][1] = 3
+arr[2][2] = 8
+arr[2][3] = 1
