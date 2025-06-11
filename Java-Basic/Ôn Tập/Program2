@@ -1,0 +1,95 @@
+package btdb;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class Program2 {
+	public static Connection getConnection() throws SQLException {
+		String url = "jdbc:sqlserver://localhost;databaseName=ViDuDB;encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String password = "13376942";
+		return DriverManager.getConnection(url, user, password);
+	}
+	
+	public static ArrayList<SinhVien> getAllSinhVien() throws SQLException{
+		Connection con = getConnection();
+		ArrayList<SinhVien> t = new ArrayList<>();
+		var st = con.createStatement();
+		var sql = "Select * from SinhVien";
+		var rs = st.executeQuery(sql);
+		while(rs.next()) {
+			var t1 = new SinhVien(rs.getString(1),rs.getString(2),rs.getString(3),rs.getBoolean(4),rs.getDate(5),rs.getString(6),rs.getString(7));
+			t.add(t1);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		return t;
+	}
+	public static boolean findSinhVien(String keyword) throws SQLException{
+		Connection con = getConnection();
+		var sql = "Select * from SinhVien where MaSinhVien = ?";
+		var st = con.prepareStatement(sql);
+		st.setString(1, keyword);
+		var rs = st.executeQuery();
+		boolean t = rs.next();
+		rs.close();
+		st.close();
+		con.close();
+		return t;
+	}
+	public static int themSinhVien(SinhVien x) throws SQLException {
+		Connection con = getConnection();
+		var sql = "INSERT INTO SinhVien Values (?,?,?,?,?,?,?)";
+		var st = con.prepareStatement(sql);
+		st.setString(1, x.getMaSinhVien());
+		st.setString(2, x.getHoDem());
+		st.setString(3, x.getTen());
+		st.setBoolean(4, x.isGioiTinhNam());
+		st.setDate(5, x.getNgaySinh());
+		st.setString(6, x.getManganh());
+		st.setString(7, x.getGhichu());
+		var i =st.executeUpdate();
+		st.close();
+		con.close();
+		return i;
+		
+	}
+	public static ArrayList<SinhVien> readText(){
+		ArrayList<SinhVien> sv = new ArrayList<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("texts//sinhvien.txt"));
+			while(true) {
+				String s[] = new String[7];
+				String st;
+				st = br.readLine();
+				if (st == null) break;
+				s = st.split(",",-1);
+				boolean g = s[3].equals("1");				
+				SinhVien t = new SinhVien(s[0],s[1],s[2],g,s[4],s[5],s[6]);
+				sv.add(t);
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Đọc không thành công");
+		}
+		return sv;
+	}
+	public static void main(String[] args) throws SQLException {
+		ArrayList<SinhVien> sv = readText();
+		int i = 0;
+		for(SinhVien t:sv) {
+			if(findSinhVien(t.getMaSinhVien()) == false) {
+				i+= themSinhVien(t);
+			}
+		}
+		System.out.println("Đã thêm "+ i +" sinh viên");
+	}
+
+}
