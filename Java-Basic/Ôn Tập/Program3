@@ -1,0 +1,79 @@
+package btdb;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class Program3 {
+	public static Connection getConnection() throws SQLException {
+		String url = "jdbc:sqlserver://localhost;databaseName=ViDuDB;encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String password = "13376942";
+		return DriverManager.getConnection(url, user, password);
+	}
+	public static ArrayList<SinhVien> findSinhVien(String keyword) throws SQLException{
+		Connection con = getConnection();
+		ArrayList<SinhVien> t = new ArrayList<>();
+		var sql = "Select l.* from SinhVien l left join NganhDaoTao r on l.MaNganhDaoTao = r.MaNganhDaoTao where TenNganhDaoTao = ?";
+		var st = con.prepareStatement(sql);
+		st.setString(1,keyword);
+		var rs = st.executeQuery();
+		while(rs.next()) {
+			var t1 = new SinhVien(rs.getString(1),rs.getString(2),rs.getString(3),rs.getBoolean(4),rs.getDate(5),rs.getString(6),rs.getString(7));
+			t.add(t1);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		return t;
+	}
+	public static boolean isInNganhDT(String s) throws SQLException {
+		Connection con = getConnection();
+		var sql = "Select * from NganhDaoTao where TenNganhDaoTao = ?";
+		var st = con.prepareStatement(sql);
+		st.setString(1, s);
+		var rs = st.executeQuery();
+		boolean r = rs.next();
+		rs.close();
+		st.close();
+		con.close();
+		return r;
+	}
+	public static ArrayList<String> readText(){
+		ArrayList<String> n = new ArrayList<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("texts//nganh.txt"));
+			while(true) {
+				String st;
+				st = br.readLine();
+				if (st == null) break;			
+				n.add(st);
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Đọc không thành công");
+		}
+		return n;
+	}
+	public static void main(String[] args) throws SQLException {
+		ArrayList<String> n = readText();
+		ArrayList<Integer> sl = new ArrayList<>();
+		ArrayList<SinhVien> dssv = new ArrayList<>();
+		for(String t:n) {
+			dssv.addAll(findSinhVien(t));
+			sl.add(findSinhVien(t).size());
+		}
+		for(SinhVien t:dssv) {
+			t.output();
+		}
+		for(int i=0;i<n.size();i++) {
+			if(isInNganhDT(n.get(i)))System.out.printf("%-30s%-5d\n",n.get(i),sl.get(i));
+		}
+	}
+
+}
