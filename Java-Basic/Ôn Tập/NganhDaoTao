@@ -1,0 +1,22 @@
+package btdb;
+
+public class NganhDaoTao {
+	private int manganh;
+	private String tennganh;
+	public int getManganh() {
+		return manganh;
+	}
+	public void setManganh(int manganh) {
+		this.manganh = manganh;
+	}
+	public String getTennganh() {
+		return tennganh;
+	}
+	public void setTennganh(String tennganh) {
+		this.tennganh = tennganh;
+	}
+	public NganhDaoTao(int i,String s) {
+		manganh = i;
+		tennganh =s;
+	}
+}
