@@ -1,0 +1,68 @@
+package btdb;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class Program {
+	public static Connection getConnection() throws SQLException {
+		String url = "jdbc:sqlserver://localhost;databaseName=ViDuDB;encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String password = "13376942";
+		return DriverManager.getConnection(url, user, password);
+	}
+	
+	public static ArrayList<SinhVien> getAllSinhVien() throws SQLException{
+		Connection con = getConnection();
+		ArrayList<SinhVien> t = new ArrayList<>();
+		var st = con.createStatement();
+		var sql = "Select * from SinhVien";
+		var rs = st.executeQuery(sql);
+		while(rs.next()) {
+			var t1 = new SinhVien(rs.getString(1),rs.getString(2),rs.getString(3),rs.getBoolean(4),rs.getDate(5),rs.getString(6),rs.getString(7));
+			t.add(t1);
+		}
+		return t;
+	}
+	public static ArrayList<SinhVien> findSinhVien(String keyword) throws SQLException{
+		Connection con = getConnection();
+		ArrayList<SinhVien> t = new ArrayList<>();
+		var sql = "Select * from SinhVien where Hodem + ' ' + Ten like ?";
+		var st = con.prepareStatement(sql);
+		st.setString(1, "%"+ keyword +"%");
+		var rs = st.executeQuery();
+		while(rs.next()) {
+			var t1 = new SinhVien(rs.getString(1),rs.getString(2),rs.getString(3),rs.getBoolean(4),rs.getDate(5),rs.getString(6),rs.getString(7));
+			t.add(t1);
+		}
+		return t;
+	}
+	public static int capNhatSinhVien(SinhVien x) throws SQLException {
+		Connection con = getConnection();
+		var sql = "UPDATE SinhVien SET HoDem = ?, Ten = ?, GioiTinh = ?, NgaySinh = ?, MaNganhDaoTao = ?, GhiChu = ? WHERE MaSinhVien = ?";
+		var st = con.prepareStatement(sql);
+		st.setString(1, x.getHoDem());
+		st.setString(2, x.getTen());
+		st.setBoolean(3, x.isGioiTinhNam());
+		st.setDate(4, x.getNgaySinh());
+		st.setString(5, x.getManganh());
+		st.setString(6, x.getGhichu());
+		st.setString(7, x.getMaSinhVien());
+		var i = st.executeUpdate();
+		st.close();
+		con.close();
+		return i;
+	}
+	public static void main(String[] args) throws SQLException {
+		// TODO Auto-generated method stub
+		SinhVien sv = new SinhVien("123", "Nguyễn Thị", "Hoa",false, "25/5/2020", "123", "null");
+		int s = capNhatSinhVien(sv);
+		System.out.println(s + " hàng được cập nhật");
+		var allsv = getAllSinhVien();
+		for(SinhVien t:allsv) {
+			t.output();
+		}
+	}
+
+}
