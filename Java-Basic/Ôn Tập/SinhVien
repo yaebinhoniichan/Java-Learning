@@ -1,0 +1,95 @@
+package ontap;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class SinhVien {
+	private String maSinhVien;
+	private String hoDem;
+	private String ten;
+	private String ghiChu;
+	private boolean gioiTinhNam;
+	private Date ngaySinh;
+	private String maNganhDaoTao;
+	public String getMaSinhVien() {
+		return maSinhVien;
+	}
+	public void setMaSinhVien(String maSinhVien) {
+		this.maSinhVien = maSinhVien;
+	}
+	public String getHoDem() {
+		return hoDem;
+	}
+	public void setHoDem(String hoDem) {
+		this.hoDem = hoDem;
+	}
+	public String getTen() {
+		return ten;
+	}
+	public void setTen(String ten) {
+		this.ten = ten;
+	}
+	public String getGhiChu() {
+		return ghiChu;
+	}
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
+	public boolean isGioiTinhNam() {
+		return gioiTinhNam;
+	}
+	public void setGioiTinh(boolean gioiTinhNam) {
+		this.gioiTinhNam = gioiTinhNam;
+	}
+	public Date getNgaySinh() {
+		return ngaySinh;
+	}
+	public void setNgaySinh(Date ngaySinh) {
+		this.ngaySinh = ngaySinh;
+	}
+	public String getMaNganhDaoTao() {
+		return maNganhDaoTao;
+	}
+	public void setMaNganhDaoTao(String maNganhDaoTao) {
+		this.maNganhDaoTao = maNganhDaoTao;
+	}
+	public SinhVien(String maSinhVien, String hoDem, String ten, String ghiChu, boolean gioiTinhNam, Date ngaySinh,
+			String maNganhDaoTao) {
+		super();
+		this.maSinhVien = maSinhVien;
+		this.hoDem = hoDem;
+		this.ten = ten;
+		this.ghiChu = ghiChu;
+		this.gioiTinhNam = gioiTinhNam;
+		this.ngaySinh = ngaySinh;
+		this.maNganhDaoTao = maNganhDaoTao;
+	}
+	public SinhVien(String maSinhVien, String hoDem, String ten, String ghiChu, boolean gioiTinhNam, String ngaySinh,
+			String maNganhDaoTao) {
+		super();
+		Date ns;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/y");
+		LocalDate ld = LocalDate.parse(ngaySinh,dtf);
+		ns = Date.valueOf(ld);
+		this.maSinhVien = maSinhVien;
+		this.hoDem = hoDem;
+		this.ten = ten;
+		this.ghiChu = ghiChu;
+		this.gioiTinhNam = gioiTinhNam;
+		this.ngaySinh = ns;
+		this.maNganhDaoTao = maNganhDaoTao;
+	}
+	public void output() {
+		System.out.printf("%-10s"+"%-" + 15 + "s" + "%-" + 10 + "s" + "%-" + 15 + "s" + "%-" + 15 + "s %-10s%-10s",
+					this.getMaSinhVien(),
+					this.getHoDem(),
+					this.getTen(),
+					this.isGioiTinhNam()? "Nam" : "Nữ",
+					this.getNgaySinh(),
+					this.getMaNganhDaoTao(),
+					this.getGhiChu()
+		);
+		System.out.println();
+	}
+}
